@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ceshi.mapper.EmployeeMapper">
+
+    <!-- 分页查询员工信息 -->
+    <select id="pageQuery" resultType="com.ceshi.eitity.Employee">
+        SELECT id, emp_name AS empName, sex, age, dept_name AS deptName, emp_degree_name AS empDegreeName
+        FROM employee
+        <where>
+            <if test="empName != null and empName != ''">
+                AND emp_name LIKE CONCAT('%', #{empName}, '%')
+            </if>
+            <if test="deptName != null and deptName !=''" >
+                AND dept_name = #{deptName}
+            </if>
+            <if test="empDegreeName != null and empDegreeName !=''">
+                AND emp_degree_name = #{empDegreeName}
+            </if>
+        </where>
+        ORDER BY id
+        LIMIT ${(currentPage-1)*pageSize}, #{pageSize}
+    </select>
+
+    <!-- 获取员工总数 -->
+    <select id="getTotalNum" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM employee
+    </select>
+
+    <!-- 根据员工ID查找员工信息 -->
+    <select id="findById" resultType="com.ceshi.eitity.Employee">
+        SELECT id, emp_name AS empName, sex, age, dept_name AS deptName, emp_degree_name AS empDegreeName
+        FROM employee
+        WHERE id = #{id}
+    </select>
+
+    <!-- 更新员工信息 -->
+    <update id="updateEmployee" parameterType="com.ceshi.eitity.Employee">
+        UPDATE employee
+        SET
+            emp_name = #{empName},
+            sex = #{sex},
+            age = #{age},
+            dept_name = #{deptName},
+            emp_degree_name = #{empDegreeName}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 插入新员工信息 -->
+    <insert id="insert" parameterType="com.ceshi.eitity.Employee" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO employee (emp_name, sex, age, dept_name, emp_degree_name)
+        VALUES (#{empName}, #{sex}, #{age}, #{deptName}, #{empDegreeName})
+    </insert>
+
+    <!-- 根据员工ID删除员工信息 -->
+    <delete id="deleteById">
+        DELETE
+        FROM employee
+        WHERE id = #{id}
+    </delete>
+
+    <!-- 获取所有员工信息 -->
+    <select id="getAllEmployees" resultType="com.ceshi.eitity.Employee">
+        SELECT id, emp_name AS empName, sex, age, dept_name AS deptName, emp_degree_name AS empDegreeName
+        FROM employee
+    </select>
+</mapper>

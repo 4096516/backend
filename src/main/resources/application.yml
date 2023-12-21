@@ -1,0 +1,10 @@
+spring:
+  datasource: # 数据源配置
+    driver-class-name: com.mysql.cj.jdbc.Driver  # MySQL数据库驱动程序类名
+    url: jdbc:mysql://127.0.0.1:3306/employee
+    username: root  # 数据库用户名
+    password: 1234  # 数据库密码
+mybatis-plus:
+  configuration:
+    #查看SQL的执行日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
